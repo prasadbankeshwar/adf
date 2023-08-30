@@ -1,0 +1,24 @@
+{
+	"name": "ds_office_ff_src",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_retail_g2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "office.csv",
+				"folderPath": "ordersdata",
+				"fileSystem": "retailsales"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
