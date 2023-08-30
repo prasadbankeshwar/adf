@@ -1,0 +1,18 @@
+{
+	"name": "ds_orders_tgt",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_retail_g2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "ordersdata",
+				"fileSystem": "retailsales"
+			}
+		}
+	}
+}
