@@ -1,0 +1,17 @@
+{
+	"name": "ds_blob_binary",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_retail_blob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "retailraw"
+			}
+		}
+	}
+}
