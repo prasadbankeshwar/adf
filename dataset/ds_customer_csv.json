@@ -1,0 +1,23 @@
+{
+	"name": "ds_customer_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_retail_blob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "customer.csv",
+				"container": "retailraw"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
