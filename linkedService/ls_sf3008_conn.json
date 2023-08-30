@@ -1,0 +1,13 @@
+{
+	"name": "ls_sf3008_conn",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "Snowflake",
+		"typeProperties": {
+			"authenticationType": "Basic",
+			"connectionString": "jdbc:snowflake://ye13488.ap-south-1.aws.snowflakecomputing.com/?user=PRAS0106&db=CLASSICMODELS&warehouse=COMPUTE_WH&role=ACCOUNTADMIN",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDQ5NzFGRkQ5LTc5QkEtNEIxMS05MjE1LTUzQ0I4OUMwRDRCNl8zNzliNzBkZS00OGRiLTQzMmMtYjcxOC04YzAwNWM1ZmYyOTAiDQp9"
+		}
+	}
+}
