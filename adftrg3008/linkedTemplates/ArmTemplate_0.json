@@ -15,6 +15,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_retail_g2'"
 		},
+		"ls_sf3008_conn_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_sf3008_conn'"
+		},
+		"ls_sf_trg3008_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_sf_trg3008'"
+		},
 		"ls_retail_g2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://sag23008.dfs.core.windows.net/"
@@ -53,6 +61,122 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_sf3008_conn')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Snowflake",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"connectionString": "[parameters('ls_sf3008_conn_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_sf_trg3008')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Snowflake",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"connectionString": "[parameters('ls_sf_trg3008_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_blob_binary')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_retail_blob",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "retailraw"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_retail_blob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_office_ff_src')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_retail_g2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "office.csv",
+						"folderPath": "ordersdata",
+						"fileSystem": "retailsales"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "officeCode",
+						"type": "String"
+					},
+					{
+						"name": "city",
+						"type": "String"
+					},
+					{
+						"name": "phone",
+						"type": "String"
+					},
+					{
+						"name": "addressLine1",
+						"type": "String"
+					},
+					{
+						"name": "addressLine2",
+						"type": "String"
+					},
+					{
+						"name": "state",
+						"type": "String"
+					},
+					{
+						"name": "country",
+						"type": "String"
+					},
+					{
+						"name": "postalCode",
+						"type": "String"
+					},
+					{
+						"name": "territory",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_retail_g2')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ds_orders_src')]",
@@ -106,25 +230,183 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_blob_binary')]",
+			"name": "[concat(parameters('factoryName'), '/sf_src_orderdetails')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "ls_retail_blob",
+					"referenceName": "ls_sf3008_conn",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "retailraw"
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "ORDERNUMBER",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "PRODUCTCODE",
+						"type": "VARCHAR",
+						"precision": 15,
+						"scale": 0
+					},
+					{
+						"name": "QUANTITYORDERED",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "PRICEEACH",
+						"type": "NUMBER",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "ORDERLINENUMBER",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
 					}
+				],
+				"typeProperties": {
+					"schema": "ORDERS",
+					"table": "ORDERDETAILS"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_retail_blob')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_sf3008_conn')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sf_tgt_3008')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_sf_trg3008",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "ORDERNUMBER",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "PRODUCTCODE",
+						"type": "VARCHAR",
+						"precision": 15,
+						"scale": 0
+					},
+					{
+						"name": "QUANTITYORDERED",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "PRICEEACH",
+						"type": "NUMBER",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "ORDERLINENUMBER",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "SALES",
+					"table": "ORDERDETAILS"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_sf_trg3008')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sf_tgt_office')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_sf_trg3008",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeTable",
+				"schema": [
+					{
+						"name": "OFFICECODE",
+						"type": "VARCHAR",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "CITY",
+						"type": "VARCHAR",
+						"precision": 50,
+						"scale": 0
+					},
+					{
+						"name": "PHONE",
+						"type": "VARCHAR",
+						"precision": 50,
+						"scale": 0
+					},
+					{
+						"name": "ADDRESSLINE1",
+						"type": "VARCHAR",
+						"precision": 50,
+						"scale": 0
+					},
+					{
+						"name": "ADDRESSLINE2",
+						"type": "VARCHAR",
+						"precision": 50,
+						"scale": 0
+					},
+					{
+						"name": "STATE",
+						"type": "VARCHAR",
+						"precision": 50,
+						"scale": 0
+					},
+					{
+						"name": "COUNTRY",
+						"type": "VARCHAR",
+						"precision": 50,
+						"scale": 0
+					},
+					{
+						"name": "POSTALCODE",
+						"type": "VARCHAR",
+						"precision": 15,
+						"scale": 0
+					},
+					{
+						"name": "TERRITORY",
+						"type": "VARCHAR",
+						"precision": 10,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"schema": "SALES",
+					"table": "OFFICES"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_sf_trg3008')]"
 			]
 		},
 		{
@@ -150,7 +432,8 @@
 								"type": "BinarySource",
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
+									"fileListPath": "retailraw/orderfiles.txt",
+									"deleteFilesAfterCompletion": false
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -189,6 +472,134 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_blob_binary')]",
 				"[concat(variables('factoryId'), '/datasets/ds_orders_tgt')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_ff_tbl')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_office_ff_src",
+								"type": "DatasetReference"
+							},
+							"name": "srcOfficefile"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "sf_tgt_office",
+								"type": "DatasetReference"
+							},
+							"name": "sfOffice"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          officeCode as string,",
+						"          city as string,",
+						"          phone as string,",
+						"          addressLine1 as string,",
+						"          addressLine2 as string,",
+						"          state as string,",
+						"          country as string,",
+						"          postalCode as string,",
+						"          territory as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> srcOfficefile",
+						"srcOfficefile sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          OFFICECODE as string,",
+						"          CITY as string,",
+						"          PHONE as string,",
+						"          ADDRESSLINE1 as string,",
+						"          ADDRESSLINE2 as string,",
+						"          STATE as string,",
+						"          COUNTRY as string,",
+						"          POSTALCODE as string,",
+						"          TERRITORY as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     stageInsert: true,",
+						"     mapColumn(",
+						"          OFFICECODE = officeCode,",
+						"          CITY = city,",
+						"          PHONE = phone,",
+						"          ADDRESSLINE1 = addressLine1,",
+						"          ADDRESSLINE2 = addressLine2,",
+						"          STATE = state,",
+						"          COUNTRY = country,",
+						"          POSTALCODE = postalCode,",
+						"          TERRITORY = territory",
+						"     )) ~> sfOffice"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_office_ff_src')]",
+				"[concat(variables('factoryId'), '/datasets/sf_tgt_office')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "df_ff_tbl",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_ff_tbl",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"srcOfficefile": {},
+									"sfOffice": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_ff_tbl')]"
 			]
 		}
 	]

@@ -11,6 +11,12 @@
 		"ls_retail_g2_accountKey": {
 			"value": ""
 		},
+		"ls_sf3008_conn_connectionString": {
+			"value": ""
+		},
+		"ls_sf_trg3008_connectionString": {
+			"value": ""
+		},
 		"ls_retail_g2_properties_typeProperties_url": {
 			"value": "https://sag23008.dfs.core.windows.net/"
 		}

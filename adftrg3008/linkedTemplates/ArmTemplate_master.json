@@ -15,6 +15,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_retail_g2'"
 		},
+		"ls_sf3008_conn_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_sf3008_conn'"
+		},
+		"ls_sf_trg3008_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_sf_trg3008'"
+		},
 		"ls_retail_g2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://sag23008.dfs.core.windows.net/"
@@ -51,6 +59,12 @@
 					},
 					"ls_retail_g2_accountKey": {
 						"value": "[parameters('ls_retail_g2_accountKey')]"
+					},
+					"ls_sf3008_conn_connectionString": {
+						"value": "[parameters('ls_sf3008_conn_connectionString')]"
+					},
+					"ls_sf_trg3008_connectionString": {
+						"value": "[parameters('ls_sf_trg3008_connectionString')]"
 					},
 					"ls_retail_g2_properties_typeProperties_url": {
 						"value": "[parameters('ls_retail_g2_properties_typeProperties_url')]"
