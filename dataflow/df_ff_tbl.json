@@ -57,7 +57,18 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     stageInsert: true) ~> sfOffice"
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          OFFICECODE = officeCode,",
+				"          CITY = city,",
+				"          PHONE = phone,",
+				"          ADDRESSLINE1 = addressLine1,",
+				"          ADDRESSLINE2 = addressLine2,",
+				"          STATE = state,",
+				"          COUNTRY = country,",
+				"          POSTALCODE = postalCode,",
+				"          TERRITORY = territory",
+				"     )) ~> sfOffice"
 			]
 		}
 	}
