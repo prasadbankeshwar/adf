@@ -6,18 +6,58 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_orders_src",
+						"referenceName": "ds_office_ff_src",
 						"type": "DatasetReference"
 					},
-					"name": "orderdetail"
+					"name": "srcOfficefile"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "sf_tgt_office",
+						"type": "DatasetReference"
+					},
+					"name": "sfOffice"
+				}
+			],
 			"transformations": [],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          officeCode as string,",
+				"          city as string,",
+				"          phone as string,",
+				"          addressLine1 as string,",
+				"          addressLine2 as string,",
+				"          state as string,",
+				"          country as string,",
+				"          postalCode as string,",
+				"          territory as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> orderdetail"
+				"     ignoreNoFilesFound: false) ~> srcOfficefile",
+				"srcOfficefile sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          OFFICECODE as string,",
+				"          CITY as string,",
+				"          PHONE as string,",
+				"          ADDRESSLINE1 as string,",
+				"          ADDRESSLINE2 as string,",
+				"          STATE as string,",
+				"          COUNTRY as string,",
+				"          POSTALCODE as string,",
+				"          TERRITORY as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true) ~> sfOffice"
 			]
 		}
 	}

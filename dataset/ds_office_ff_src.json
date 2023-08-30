@@ -19,6 +19,43 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "officeCode",
+				"type": "String"
+			},
+			{
+				"name": "city",
+				"type": "String"
+			},
+			{
+				"name": "phone",
+				"type": "String"
+			},
+			{
+				"name": "addressLine1",
+				"type": "String"
+			},
+			{
+				"name": "addressLine2",
+				"type": "String"
+			},
+			{
+				"name": "state",
+				"type": "String"
+			},
+			{
+				"name": "country",
+				"type": "String"
+			},
+			{
+				"name": "postalCode",
+				"type": "String"
+			},
+			{
+				"name": "territory",
+				"type": "String"
+			}
+		]
 	}
 }
