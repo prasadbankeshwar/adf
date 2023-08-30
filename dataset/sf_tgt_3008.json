@@ -1,0 +1,47 @@
+{
+	"name": "sf_tgt_3008",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sf_trg3008",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeTable",
+		"schema": [
+			{
+				"name": "ORDERNUMBER",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "PRODUCTCODE",
+				"type": "VARCHAR",
+				"precision": 15,
+				"scale": 0
+			},
+			{
+				"name": "QUANTITYORDERED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "PRICEEACH",
+				"type": "NUMBER",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "ORDERLINENUMBER",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "SALES",
+			"table": "ORDERDETAILS"
+		}
+	}
+}
