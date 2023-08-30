@@ -1,5 +1,5 @@
 {
-	"name": "ds_customer_csv",
+	"name": "ds_orders_src",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_retail_blob",
@@ -10,12 +10,12 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "customer.csv",
+				"fileName": "*.json",
 				"container": "retailraw"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
-			"firstRowAsHeader": true,
+			"firstRowAsHeader": false,
 			"quoteChar": "\""
 		},
 		"schema": []
