@@ -55,7 +55,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_customer_csv')]",
+			"name": "[concat(parameters('factoryName'), '/ds_orders_src')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -68,7 +68,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "customer.csv",
+						"fileName": "*.csv",
 						"container": "retailraw"
 					},
 					"columnDelimiter": ",",
