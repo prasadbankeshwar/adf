@@ -1,0 +1,36 @@
+{
+	"name": "df_orderSummary",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_orders_src",
+						"type": "DatasetReference"
+					},
+					"name": "srcOrders"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_orders_src",
+						"type": "DatasetReference"
+					},
+					"name": "srcOrderDetails"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     wildcardPaths:['order*.csv']) ~> srcOrders",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     wildcardPaths:['orderdetail.csv']) ~> srcOrderDetails"
+			]
+		}
+	}
+}
